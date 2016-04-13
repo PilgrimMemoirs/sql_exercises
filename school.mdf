@@ -1,0 +1,129 @@
+DROP TABLE schools;
+DROP TABLE classes;
+DROP TABLE teachers;
+DROP TABLE students;
+DROP TABLE student_classes;
+
+CREATE TABLE schools (
+  sc_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(64),
+  address  VARCHAR(64),
+  city  VARCHAR(64),
+  state  VARCHAR(64),
+  email VARCHAR(128) UNIQUE,
+  phone VARCHAR(128) UNIQUE,
+  created_at DATETIME,
+  updated_at DATETIME
+);
+
+
+CREATE TABLE classes (
+  c_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  school_id INTEGER,
+  teacher_id INTEGER,
+  name VARCHAR(64) UNIQUE,
+  subject VARCHAR(64),
+  code VARCHAR(128) UNIQUE,
+  room INTEGER,
+  created_at DATETIME,
+  updated_at DATETIME,
+  FOREIGN KEY(school_id) REFERENCES schools(sc_id),
+  FOREIGN KEY(teacher_id) REFERENCES teachers(t_id)
+);
+
+
+CREATE TABLE teachers (
+  t_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name VARCHAR(64),
+  last_name VARCHAR(64),
+  email VARCHAR(128) UNIQUE,
+  created_at DATETIME,
+  updated_at DATETIME
+);
+
+
+CREATE TABLE students (
+  s_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name VARCHAR(64),
+  last_name VARCHAR(64),
+  email VARCHAR(128) UNIQUE,
+  created_at DATETIME,
+  updated_at DATETIME
+);
+
+
+
+CREATE TABLE student_classes (
+  id INTEGER PRIMARY KEY,
+  student_id INTEGER,
+  class_id INTEGER,
+  FOREIGN KEY(student_id) REFERENCES students(s_id),
+  FOREIGN KEY(class_id) REFERENCES classes(c_id)
+);
+
+
+-- Make Tables to match these records
+
+
+-- SCHOOLS
+INSERT INTO schools
+(name, city, state, created_at, updated_at)
+VALUES
+('Latin', 'Chicago', 'IL', DATETIME('now'), DATETIME('now'));
+
+
+-- STUDENTS
+INSERT INTO students
+(first_name, last_name, email, created_at, updated_at)
+VALUES
+('J', 'S', 'ILl@nois.com', DATETIME('now'), DATETIME('now'));
+
+INSERT INTO students
+(first_name, last_name, email, created_at, updated_at)
+VALUES
+('J', 'S', 'IL@il.com', DATETIME('now'), DATETIME('now'));
+
+
+-- CLASSES
+INSERT INTO classes
+(school_id, teacher_id, name, subject, code, room, created_at, updated_at)
+VALUES
+(1, 2, 'CSP', 'CompSci', "CS01", 317,  DATETIME('now'), DATETIME('now'));
+
+INSERT INTO classes
+(school_id, teacher_id, name, subject, code, room, created_at, updated_at)
+VALUES
+(2, 2, 'CSP2', 'CompSci', "CS02", 317,  DATETIME('now'), DATETIME('now'));
+
+-- TEACHERS
+INSERT INTO teachers
+(first_name, last_name, email, created_at, updated_at)
+VALUES
+("Aaron", 'Smith', 'asmith@school.org', DATETIME('now'), DATETIME('now'));
+INSERT INTO teachers
+(first_name, last_name, email, created_at, updated_at)
+VALUES
+("Jen", 'Tran', 'jtran@school.org', DATETIME('now'), DATETIME('now'));
+INSERT INTO teachers
+(first_name, last_name, email, created_at, updated_at)
+VALUES
+("Juan", 'Swanson', 'jswanson@school.org', DATETIME('now'), DATETIME('now'));
+
+
+-- STUDENT CLASSES
+INSERT INTO student_classes
+(student_id, class_id) VALUES (1,4);
+
+
+
+
+SELECT * FROM schools;
+SELECT * FROM classes;
+SELECT * FROM student_classes;
+
+
+SELECT  * FROM students
+INNER JOIN student_classes
+ON s_id = student_id;
+
+
